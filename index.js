@@ -1,8 +1,18 @@
+/* ver 2: mw functions for logging and authentication
 const express = require('express');
 const app = express();
 const Joi = require('@hapi/joi');
 app.use(express.json());
 
+app.use(function(req,res,next){
+  console.log("Logging...");
+  next();
+});
+
+app.use(function(req,res,next){
+  console.log("Authenticating...");
+  next();
+});
 const genres = [
   {"id":1,"name":"Action"},
   {"id":2,"name":"Horror"},
