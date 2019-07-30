@@ -19,6 +19,7 @@
   "homepage": "https://github.com/dsrisid/movie_rental#readme",
   "dependencies": {
     "@hapi/joi": "^15.1.0",
+    "config": "^3.2.2",
     "express": "^4.17.1"
   }
 }

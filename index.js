@@ -1,18 +1,18 @@
-/* ver 2: mw functions for logging and authentication
+/* ver 2: mw functions for logging and authentication*/
+const config = require('config');
 const express = require('express');
 const app = express();
 const Joi = require('@hapi/joi');
+const logger = require('./logger');
+const authenticator = require('./authenticator');
+
 app.use(express.json());
+app.use(logger);
+app.use(authenticator);
+app.use(express.static("public"));
 
-app.use(function(req,res,next){
-  console.log("Logging...");
-  next();
-});
+console.log(`Application name:${config.get("name")}`);
 
-app.use(function(req,res,next){
-  console.log("Authenticating...");
-  next();
-});
 const genres = [
   {"id":1,"name":"Action"},
   {"id":2,"name":"Horror"},
