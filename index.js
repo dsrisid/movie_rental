@@ -12,7 +12,7 @@ app.use(authenticator);
 app.use(express.static("public"));
 
 console.log(`Application name:${config.get("name")}`);
-
+console.log(`mail password:${config.get("mail.password")}`)
 const genres = [
   {"id":1,"name":"Action"},
   {"id":2,"name":"Horror"},
