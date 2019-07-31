@@ -1,4 +1,6 @@
 /* ver 2: mw functions for logging and authentication*/
+const startupDebugger = require("debug")("app:startup");
+const invokeDebugger = require("debug")("app:invoke");
 const config = require('config');
 const express = require('express');
 const app = express();
@@ -11,8 +13,8 @@ app.use(logger);
 app.use(authenticator);
 app.use(express.static("public"));
 
-console.log(`Application name:${config.get("name")}`);
-console.log(`mail password:${config.get("mail.password")}`)
+startupDebugger(`Application name:${config.get("name")}`);
+startupDebugger(`mail password:${config.get("mail.password")}`)
 const genres = [
   {"id":1,"name":"Action"},
   {"id":2,"name":"Horror"},
@@ -20,17 +22,19 @@ const genres = [
 ];
 
 app.get("/api/genres/:id",(req,res)=>{
-  console.log("/api/genres/:id");
+  invokeDebugger("GET of /api/geners/:id invoked");
   const genre = genres.find(g => g.id === parseInt(req.params.id));
   if(!genre) return res.status(404).send(`Genre with id ${req.params.id}`);
   res.send(genre);
 });
 
 app.get("/api/genres",(req,res)=>{
+  invokeDebugger("GET of /api/geners/:id invoked");
   res.send(genres);
 });
 
 app.post("/api/genres/",(req,res)=>{
+  invokeDebugger("POST of /api/geners/:id invoked");
   const {error} = validateGenre(req.body);
   if(error) return res.status(400).send(error.details[0].message);
   const genre = {
@@ -41,6 +45,7 @@ app.post("/api/genres/",(req,res)=>{
   res.send(genre);
 });
 app.put("/api/genres/:id",(req,res)=>{
+  invokeDebugger("PUT of /api/geners/:id invoked");
   const genre = genres.find(g => g.id === parseInt(req.params.id));
   if(!genre) return res.status(404).send(`Genre with id ${req.params.id}`);
   const {error} = validateGenre(req.body);
@@ -50,6 +55,7 @@ app.put("/api/genres/:id",(req,res)=>{
 });
 
 app.delete("/api/genres/:id",(req,res)=>{
+  invokeDebugger("DELETE of /api/geners/:id invoked");
   const genre = genres.find(g => g.id === parseInt(req.params.id));
   if(!genre) return res.status(404).send(`Genre with id ${req.params.id}`);
   const idx = genres.indexOf(genre);
@@ -67,4 +73,4 @@ function validateGenre(genre){
 
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`listening at port ${PORT}...`));
+app.listen(PORT, () => startupDebugger(`listening at port ${PORT}...`));
