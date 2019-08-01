@@ -8,10 +8,13 @@ const Joi = require('@hapi/joi');
 const logger = require('./logger');
 const authenticator = require('./authenticator');
 
+app.set("view engine","pug");
+app.set("views","./views");//the location where view templates are available and this is the default location.
 app.use(express.json());
 app.use(logger);
 app.use(authenticator);
 app.use(express.static("public"));
+
 
 startupDebugger(`Application name:${config.get("name")}`);
 startupDebugger(`mail password:${config.get("mail.password")}`)
@@ -20,6 +23,10 @@ const genres = [
   {"id":2,"name":"Horror"},
   {"id":3, "name":"Romance"}
 ];
+
+app.get("/",(req,res)=>{
+  res.render("index",{title:"My Express App", message:"Hello World!!"});
+});
 
 app.get("/api/genres/:id",(req,res)=>{
   invokeDebugger("GET of /api/geners/:id invoked");
